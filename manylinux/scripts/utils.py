@@ -8,9 +8,15 @@ def get_ptcu_code():
 
 def unpack_wheel(wheel_path, directory=None):
     if directory == None:
-        subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path])
+        try:
+            subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path], stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            print('error>', e.output, '<')
     else:
-        subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path, "-d", directory])
+        try:
+            subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path, "-d", directory], stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            print('error>', e.output, '<')
 
 def pack_wheel(input_directory, output_directory):
     subprocess.check_output(["python", "-m", "wheel", "pack", input_directory, "-d", output_directory])
