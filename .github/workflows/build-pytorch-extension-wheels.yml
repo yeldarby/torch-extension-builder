@@ -55,7 +55,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     container: 
-      image: docker://torchextensionbuilder/manylinux:py${{ matrix.python-version }}-pt${{ matrix.pytorch-version }}-cu${{ matrix.cuda-version }}${{needs.setup.outputs.image-tag}}
+      image: docker://yeldarb/manylinux:py${{ matrix.python-version }}-pt${{ matrix.pytorch-version }}-cu${{ matrix.cuda-version }}${{needs.setup.outputs.image-tag}}
     strategy:
       fail-fast: false
       matrix:
