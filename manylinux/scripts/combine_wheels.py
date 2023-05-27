@@ -42,6 +42,7 @@ def combine_wheels(wheels, output_dir="combined_wheels"):
 
     for wheel in wheels:
         wheel_tag = wheel.split(".whl.")[-1]
+        print("rename", wheel, wheel_name)
 
         os.rename(wheel, f"{wheel_name}.whl")
         utils.unpack_wheel(f"{wheel_name}.whl")
