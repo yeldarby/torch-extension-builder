@@ -7,6 +7,7 @@ def get_ptcu_code():
     return "pt" + torch_version + "cu" + cuda_version
 
 def unpack_wheel(wheel_path, directory=None):
+    print("unpack", wheel_path, directory)
     if directory == None:
         try:
             subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path], stderr=subprocess.STDOUT)
