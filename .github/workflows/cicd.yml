@@ -97,7 +97,7 @@ jobs:
             CUDA_ARCH_LIST=${{ matrix.cuda-arch-list }}
             GCC_VERSION=${{ matrix.gcc-version }}
           context: ./manylinux
-          tags: torchextensionbuilder/manylinux:py${{ matrix.python-version }}-pt${{ matrix.pytorch-version }}-cu${{ matrix.cuda-version }}${{needs.setup.outputs.image-tag}}
+          tags: yeldarb/manylinux:py${{ matrix.python-version }}-pt${{ matrix.pytorch-version }}-cu${{ matrix.cuda-version }}${{needs.setup.outputs.image-tag}}
           push: true
   
   build-test-package:
