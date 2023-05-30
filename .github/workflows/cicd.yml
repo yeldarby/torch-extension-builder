@@ -13,7 +13,7 @@ on:
 jobs:
   setup:
     name: Setup
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       image-tag: ${{ steps.get-tag.outputs.image-tag }}
     steps:
@@ -30,7 +30,7 @@ jobs:
   build-images:
     name: Build Images
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
@@ -111,7 +111,7 @@ jobs:
   test-built-package:
     name: Test Built Package
     needs: build-test-package
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
@@ -176,7 +176,7 @@ jobs:
   tests-passed:
     name: Tests Passed
     needs: test-built-package
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Tests Passed
         run: echo "Tests Passed"
