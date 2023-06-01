@@ -12,12 +12,14 @@ def unpack_wheel(wheel_path, directory=None):
         try:
             subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path], stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            print('error>', e.output, '<')
+            print('1 error unpacking wheel: ', e.output)
+            exit(1)
     else:
         try:
             subprocess.check_output(["python", "-m", "wheel", "unpack", wheel_path, "-d", directory], stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            print('error>', e.output, '<')
+            print('2 error unpacking wheel: ', e.output)
+            exit(1)
 
 def pack_wheel(input_directory, output_directory):
     subprocess.check_output(["python", "-m", "wheel", "pack", input_directory, "-d", output_directory])

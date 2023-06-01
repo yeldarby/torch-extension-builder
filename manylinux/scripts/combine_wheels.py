@@ -40,6 +40,12 @@ def combine_wheels(wheels, output_dir="combined_wheels"):
     wheel_name = wheel_file.split(".whl.")[0]
     work_dir = "-".join(wheel_name.split("-")[0:2])
 
+    distribution, version = wheel_name.split('-')[0:2]
+
+    # replace manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+    # with manylinux_2_17_x86_64.whl in wheel_name
+    wheel_name = wheel_name.replace("manylinux2014_x86_64.", "")
+
     for wheel in wheels:
         wheel_tag = wheel.split(".whl.")[-1]
         print("rename", wheel, wheel_name)
@@ -47,13 +53,26 @@ def combine_wheels(wheels, output_dir="combined_wheels"):
         os.rename(wheel, f"{wheel_name}.whl")
         utils.unpack_wheel(f"{wheel_name}.whl")
         os.rename(f"{wheel_name}.whl", wheel)
-
+        
         for library in glob.glob(f"{work_dir}/*.so"):
             os.rename(library, f"{library}.{wheel_tag}")
     
+    print("Wrapping libraries...")
     wrap_libraries(work_dir)
 
+    # Correcting the WHEEL metadata
+    print("Correcting the WHEEL metadata...")
+    wheel_metadata_file = os.path.join(work_dir, f"{distribution}-{version}.dist-info", 'WHEEL')
+    with open(wheel_metadata_file, 'r') as f:
+        lines = f.readlines()
+    with open(wheel_metadata_file, 'w') as f:
+        for line in lines:
+            if line.strip().startswith('Tag') and 'manylinux2014_x86_64' in line:
+                continue
+            f.write(line)
+
     dir_util.mkpath(output_dir)
+    print("Packing wheel...")
     utils.pack_wheel(work_dir, output_dir)
     shutil.rmtree(work_dir)
 
@@ -63,4 +82,5 @@ if __name__ == "__main__":
     parser.add_argument('wheels', type=str, nargs='+', help='The wheel files to be combined.')
     args = parser.parse_args()
 
+    print("COMBINE", args.wheels)
     combine_wheels(args.wheels)
