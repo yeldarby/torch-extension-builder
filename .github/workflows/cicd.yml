@@ -95,6 +95,7 @@ jobs:
           context: ./manylinux
           tags: yeldarb/manylinux:py${{ matrix.python-version }}-pt${{ matrix.pytorch-version }}-cu${{ matrix.cuda-version }}${{needs.setup.outputs.image-tag}}
           push: true
+          pull: true
   
   build-test-package:
     name: Build Test Package
